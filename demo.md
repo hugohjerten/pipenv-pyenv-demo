@@ -10,8 +10,8 @@ brew install pyenv
 brew install pipenv
 ```
 
-### 0.2 In case of chaos
-If pyenv installation chaos on macos, export the below flags for temporarily allowing to install specific python versions. (Check this [link](https://github.com/jiansoung/issues-list/issues/13).)
+### 0.2 In case of pyenv chaos
+If chaos when installing a pyenv version on macos, export the below flags for temporarily allowing to install specific python versions. (Check this [link](https://github.com/jiansoung/issues-list/issues/13).)
 
 ```
 export LDFLAGS="${LDFLAGS} -L/usr/local/opt/zlib/lib"
@@ -57,7 +57,7 @@ pyenv uninstall 3.7-dev
 Set local python version (.python-version)
 
 ```
-pyenv local anaconda3-2019.03
+pyenv local 3.7.2
 python --version
 which python
 ```
@@ -76,47 +76,40 @@ pyenv global system
 Set up a python virtual environment
 
 ```
-pipenv --python 3.7.0
+pipenv --python 3.6.8
 ```
 
-`Pipfile` provides the overview of the virtual environment, whilst `Pipfile.lock` provides the specification for all packages needed (including dependecnies), with corresponding versions.
+`Pipfile` provides the overview of the virtual environment. As of yet there is no `Pipfile.lock` file since we havn't specified any packages. We will do that now.
+
+```
+pipenv install numpy bokeh
+```
+
+Now a `Pipfile.lock` has been created, which provides the specification for all packages needed (including dependecnies), with corresponding versions.
 
 ```
 less Pipfile
 less Pipfile.lock
 ```
 
-Install packages
+Install specific version of package. Will install version `0.24.1`, and any minor updates, but not `0.25`
 
 ```
-pipenv install numpy bokeh
-```
-
-Install specific version of package. Will install version `1.2`, and any minor updates, but not `2.0`
-
-```
-pipenv install requests~=1.2
+pipenv install pandas~=0.24.1
 ```
 
 Uninstall package.
 
 ```
-uninstall requests
+pipenv uninstall pandas
 ```
 
 Install exact version of package. Will never update.
 
 ```
-pipenv install requests==1.2
+pipenv install pandas==0.24.2
 ```
 
-Alternative to uninstalling a package is using clean.
-
-```
-# Delete specific package from Pipfile (requests)
-# and then
-pipenv clean
-```
 
 Install package for development
 
@@ -160,23 +153,40 @@ pipenv python plot_figure.py
 exit
 ```
 
+### See an overview of dependency resolution
+
+Understand which dependencies that your installed packages have and that have been installed. The below command will also show version of the packages that have been installed, and which versions of the dependant packages that are required.
+
+```
+pipen graph
+```
+
+
 ### Copying environment using `Pipfile.lock`
 
 When multiple people are working on the same project, it becomes even more important that the environment is set up the same way on different local devices.
 The `Pipfile.lock` file helps with that.
 
 ```
-copy
+mkdir project_2
+cd project_2
+cp project_1/plot_figure project_2/
+cp project_1/Pipfile.lock project_2/
+
+pipenv sync Pipfile.lock
 ```
 
 
 ### Update packages
 
+Get a list of which packages have updates available.
 
 ```
 pipenv update --outdated
 ```
 
+Update a specific package.
+
 ```
-pipenv update --outdated
+pipenv update bokeh
 ```
