@@ -148,9 +148,7 @@ Spawn a command within virtualenv
 python plot_figure.py
 
 # Will work
-pipenv python plot_figure.py
-
-exit
+pipenv run python plot_figure.py
 ```
 
 ### See an overview of dependency resolution
@@ -169,9 +167,9 @@ The `Pipfile.lock` file helps with that.
 
 ```
 mkdir project_2
-cd project_2
 cp project_1/plot_figure project_2/
 cp project_1/Pipfile.lock project_2/
+cd project_2
 
 pipenv sync Pipfile.lock
 ```
@@ -188,5 +186,5 @@ pipenv update --outdated
 Update a specific package.
 
 ```
-pipenv update bokeh
+pipenv update pandas
 ```
