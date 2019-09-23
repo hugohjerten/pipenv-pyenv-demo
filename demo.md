@@ -171,7 +171,7 @@ cp project_1/plot_figure project_2/
 cp project_1/Pipfile.lock project_2/
 cd project_2
 
-pipenv sync Pipfile.lock
+pipenv sync
 ```
 
 
